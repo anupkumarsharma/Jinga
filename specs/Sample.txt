@@ -1,0 +1,7 @@
+This is sample documet to test the %Sub% capability of the Jinga.
+
+%ModuleName%
+%Author%
+%host%
+%adapter%
+%database%

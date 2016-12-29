@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>jinga</id>
+    <version>0.0.0</version>
+    <authors>Anup Kumar</authors>
+    <owners>Anup Kumar</owners>
+    <projectUrl>https://github.com/Anup Kumar</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <summary>jinga substitues the environment specific value</summary>
+    <description>jinga allows user to replace the user specific values in files for a defined environment, using YAML file. </description>
+    <language>en-US</language>
+    <tags>build powershell</tags>
+  </metadata>
+</package>
