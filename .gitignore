@@ -1,4 +1,6 @@
 [B|b]in
 [V|v]endors
 *.nupkg
+.vs
+.vs/*
 Thumbs.db
