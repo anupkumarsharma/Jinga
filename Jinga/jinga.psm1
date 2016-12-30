@@ -1,5 +1,7 @@
-#region Third Party Modules 
-  Import-Module 'C:\PowerYaml-master\PowerYaml.psm1'
+#region Third Party Modules - Todo - Replace with better mechanism
+$relativePath = Split-Path -Parent $script:MyInvocation.MyCommand.Path
+$relativePath=[string]::Join('\', $relativePath.Split('\')[0..$($relativePath.Split('\').Length-2)])
+Import-Module @(Join-Path $relativePath "\vendors\PowerYaml.1.0.2\tools\PowerYaml.psm1")
 #region  Functions
 . $PSScriptRoot\Functions\fileoperations.ps1
 . $PSScriptRoot\Functions\jingaoperations.ps1
@@ -19,18 +21,19 @@ function Invoke-Jinga {
 		[Parameter(Position=2,Mandatory=1)][string]$environmentType,
 		[Parameter(Position = 3, Mandatory = 0)][switch] $nologo = $false
 		   )
+		  
 	 if (-not $nologo) {
             "jinga"
         }
-	 # try {
-	[YamlModel] $yamlModel = Run-YamlOperations -YamlFilePath $file -EnvironmentType $environmentType
-		 Write-Host $yamlModel |Format-Table
-	[JingaModel[]] $JingaModel  =  Run-JingaOperation -YamlModel $yamlModel
-	Run-FileOperations -JingaModel $JingaModel  -backupPath $backup 
-	#	  }
-	#catch {
-      
-	#	}
+	  try {
+		  
+			[YamlModel] $yamlModel = Run-YamlOperations -YamlFilePath $file -EnvironmentType $environmentType
+			[JingaModel[]] $JingaModel  =  Run-JingaOperation -YamlModel $yamlModel
+			Run-FileOperations -JingaModel $JingaModel  -backupPath $backup 
+		  }
+	   catch {
+          Write-Host -Message $_.Exception.Message
+		     }
 	
 }
 
