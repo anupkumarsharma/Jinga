@@ -5,6 +5,7 @@ $binDir = "$parent\bin"
 $jingaDirectory = "$parent\jinga\"
 $jingaBinDirectory = "$binDir\jinga\"
 $jingaBinFunctionDirectory = "$binDir\jinga\Functions\"
+$jingaBuildDirectory = "$parent\build\"
 
 # Run tests
 
@@ -15,9 +16,9 @@ if (Test-Path $binDir -PathType container) {
 
 }
 
-& .\loadnugetreference.ps1
+& $jingaBuildDirectory\loadnugetreference.ps1
 #Create package 
-& .\nugetBuild.ps1
+& $jingaBuildDirectory\nugetBuild.ps1
 
 # Add jinga Package 
 
