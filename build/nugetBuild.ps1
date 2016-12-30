@@ -1,6 +1,10 @@
-$parent = '..\'
+$parentScript=  Split-Path -Parent $MyInvocation.MyCommand.Path
+$parent = Split-Path -Parent $parentScript # '..\'
 $psdPath = Join-Path $parent Jinga\jinga.psd1
 
+
+
+write-host  $parent 
 try
 {
 
@@ -16,11 +20,12 @@ catch
 
 $binDir = "$parent\bin"
 if (Test-Path $binDir -PathType container) {
-    Remove-Item $binDir -Recurse -Force
+    Remove-Item -Recurse -Force $binDir
+	 Remove-Item -Recurse -Force $binDir
 }
 
 
-Copy-Item -Recurse $dir\install $binDir\tools
-Copy-Item -Recurse $dir\vendors $binDir\vendors
+Copy-Item -Recurse $parentScript\install $binDir\tools
+Copy-Item -Recurse $parentScript\vendors $binDir\vendors
 
 

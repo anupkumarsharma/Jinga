@@ -1,0 +1,31 @@
+﻿Configuration:
+ - Define:
+    TypeXpath: 
+      host:  //singer/text()
+      book:  //actor[last()]/text()
+      title: //actor[@id='2']/text()
+    TypeRegEx: 
+ - RuleSet:
+    File: 'workingDir\xpathR_File1.config'
+    Substitute:
+     development:
+      title: Fire And Ice
+      book:  GamesofThrones
+      host:  RRMartin
+      regexpression: 10
+     test:
+      database: myapp_test
+      adapter:  GamesofThrones
+      host:     RRMartin
+ - RuleSet:
+    File: 'workingDir\xpathR_File2.txt'
+    Substitute:
+     development:
+      title: Fire And Ice
+      book:  GamesofThrones
+      host:  RRMartin
+      regexpression: 10
+     test:
+      database: myapp_test
+      adapter:  GamesofThrones
+      host:     RRMartin

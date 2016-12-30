@@ -14,7 +14,7 @@ function Run-YamlOperations
 	 $yamlContent = Read-Yaml $YamlFilePath;
 	 #Validate YAML 
 	 Validate-YamlStructure $yamlContent
-	# Get YAML Model
+	 #Get YAML Model
 	 $model = New-Object YamlModel
 	 $model.SubstitutionModel = Parse-Yaml $yamlContent $EnvironmentType
 	 $model.TypeModel =  Parse-Defination $yamlContent 

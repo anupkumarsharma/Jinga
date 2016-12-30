@@ -1,0 +1,30 @@
+﻿Configuration:
+ - Define:
+    TypeXpath: 
+      host:  /file/foo[@attribute='bar']/@attribute
+    TypeRegEx: 
+      regexpression:  '\.\d{2}\.'
+ - RuleSet:
+    File: 'C:\Workspace_Anup-SeedProject\Jinga\web.config'
+    Substitute:
+     development:
+      database: myapp_development
+      adapter:  postgres
+      host:     AnupHost
+      regexpression: 10
+     test:
+      database: myapp_test
+      adapter:  postgres
+      host:     localhost
+ - RuleSet:
+    File: 'C:\Workspace_Anup-SeedProject\Jinga\app.config'
+    Substitute:
+     development:
+      database: myapp_development
+      adapter:  postgres
+      host:     localhost
+      regexpression: 1010
+     test:
+      database: myapp_test
+      adapter:  postgres
+      host:     localhost

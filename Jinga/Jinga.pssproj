@@ -32,6 +32,9 @@ Invoke-BootStrap</DebugArguments>
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="Functions\" />
+    <Folder Include="NewFolder1\" />
+    <Folder Include="specs\" />
+    <Folder Include="specs\testFiles\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Functions\fileoperations.ps1" />
@@ -40,7 +43,7 @@ Invoke-BootStrap</DebugArguments>
     <Compile Include="Functions\yamloperations.ps1" />
     <Compile Include="jinga.psd1" />
     <Compile Include="jinga.psm1" />
-    <Compile Include="Jinga.tests.ps1" />
+    <Compile Include="specs\Jinga.tests.ps1" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Target Name="Build" />

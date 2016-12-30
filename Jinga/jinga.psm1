@@ -1,5 +1,5 @@
 #region Third Party Modules 
-  Import-Module 'C:\Workspace_Anup-SeedProject\Jinga\PowerYaml-master\PowerYaml.psm1'
+  Import-Module 'C:\PowerYaml-master\PowerYaml.psm1'
 #region  Functions
 . $PSScriptRoot\Functions\fileoperations.ps1
 . $PSScriptRoot\Functions\jingaoperations.ps1
@@ -22,16 +22,15 @@ function Invoke-Jinga {
 	 if (-not $nologo) {
             "jinga"
         }
-	$file = "C:\Workspace_Anup-SeedProject\Jinga\Sample.yaml"
-	$backup = 'C:\Workspace_Anup-SeedProject\Jinga\Backup'
-	  try {
-	[YamlModel] $yamlModel = Run-YamlOperations -YamlFilePath $file -EnvironmentType 'development'
+	 # try {
+	[YamlModel] $yamlModel = Run-YamlOperations -YamlFilePath $file -EnvironmentType $environmentType
+		 Write-Host $yamlModel |Format-Table
 	[JingaModel[]] $JingaModel  =  Run-JingaOperation -YamlModel $yamlModel
 	Run-FileOperations -JingaModel $JingaModel  -backupPath $backup 
-		  }
-	catch {
+	#	  }
+	#catch {
       
-		}
+	#	}
 	
 }
 

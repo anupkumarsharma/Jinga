@@ -2,7 +2,8 @@
 # FileOperations.ps1
 #
 . $PSScriptRoot\model.ps1
-
+#$parentScript=  Split-Path -Parent $MyInvocation.MyCommand.Path
+$relativePath = $(Get-Location)
 function Run-FileOperations
 {
 	Param (
@@ -10,8 +11,8 @@ function Run-FileOperations
          [JingaModel[]]  $JingaModel ,
 		 [Parameter(Mandatory=$true)] 
 		 [string] $backupPath)
-
 	Write-Host "Running File Operations For $file - Start"
+	Write-Host "Backup Folder Configured - $backupPath"
 	Process-VairableSubstitutions -JingaModel $JingaModel  -backupPath $backupPath
 	Write-Host "Running File Operations - Done"
 }
@@ -28,14 +29,16 @@ function Process-VairableSubstitutions
 	foreach($model in $JingaModel.GetEnumerator())
 	{
 		[JingaModel]$jingaModel = $model;
-		Write-Host
-		Backup-Copy -file $jingaModel.FileName -backupPath $backupPath;
-	 #Process String and Regex
-		Replace-FileStringTokens -file $jingaModel.FileName -stringTokenList  $jingaModel.StringTypeCollection -regexTokenList $jingaModel.RegexCollection
-		 #Process Xpath 
-		Replace-FileXpathTokens -file $jingaModel.FileName  -tokenlist $jingaModel.XpathTypeCollection
+		$relativeFile =  Get-RelativePath $jingaModel.FileName
+		Write-Host 'Processing file -'$relativeFile
+		Backup-Copy -file $relativeFile -backupPath $backupPath;
+	    #Process String and Regex
+		Replace-FileStringTokens -file $relativeFile -stringTokenList  $jingaModel.StringTypeCollection -regexTokenList $jingaModel.RegexCollection
+		#Process Xpath 
+		Replace-FileXpathTokens -file $relativeFile  -tokenlist $jingaModel.XpathTypeCollection
 	}
 }
+
 
 function Backup-Copy {
 	param (
@@ -43,13 +46,10 @@ function Backup-Copy {
          [string] $file,
 		 [Parameter(Mandatory=$true)] 
 		 [string] $backupPath)
-
     if (-not (Test-Path $backupPath ) ) {
         New-Item $backupPath -ItemType directory | Out-Null
     }
-        Copy-Item $file $backupPath -Force -ErrorAction SilentlyContinue
-    $fileName = (Get-Item $file).Name
-   Write-Host  "$backupPath\$fileName"
+        Copy-Item $file $backupPath -Force -ErrorAction Stop
 }
  
 
@@ -58,22 +58,27 @@ function Replace-FileStringTokens{
 	param (
 		 [Parameter(Mandatory=$true)] 
          [string] $file ,
-		 [Parameter(Mandatory=$true)] 
+		 [Parameter(Mandatory=$true)]  [AllowEmptyCollection()]
          [VariableModel[]] $stringTokenList ,
-		 [Parameter(Mandatory=$true)] 
+		 [Parameter(Mandatory=$true)]  [AllowEmptyCollection()]
 		 [VariableModel[]] $regexTokenList 
 ) 
-	   if (-not (Test-Path $file ) ) {
-		   throw exception("$file File have no content or bad format");
-		   }
-if ($file -eq $null) 
+	  if ($file -eq $null) 
 {
 	Write-Warning "$file File have no content or bad format"
 	return;
-   # throw exception("$file File have no content or bad format");
 }
+ if (-not (Test-Path $file ) ) {
+	 Write-Warning "$file Unable to locate file"
+	 return;
+}
+	if($stringTokenList.Count -eq 0 -and $regexTokenList.Count -eq 0)
+	{
+		Write-Warning 'No string/regex token defined'
+		return;
+	}
 
-# Take the buffer and replace the string tokens
+        # Take the buffer and replace the string tokens
 		$content = [System.IO.File]::ReadAllText($file)
 	foreach ($h in $stringTokenList) {
 		$content =$content.Replace($h.Name,$h.Value)
@@ -89,38 +94,55 @@ if ($file -eq $null)
 function  Replace-FileXpathTokens{
 	param (
 		 [Parameter(Mandatory=$true)] 
-    [string] $file ,
-		 [Parameter(Mandatory=$true)] 
-    [VariableModel[]] $tokenList
+         [string] $file ,
+		 [Parameter(Mandatory=$true)]  [AllowEmptyCollection()]
+         [VariableModel[]] $tokenList
 ) 
-
- if (-not (Test-Path $file ) ) {
-		   throw exception("$file File have no content or bad format");
-		   }
 if ($file -eq $null) 
 {
 	Write-Warning "$file File have no content or bad format"
 	return;
-   # throw exception("$file File have no content or bad format");
 }
-		
-$xml = [xml] [System.IO.File]::ReadAllText($file) 
+ if (-not (Test-Path $file ) ) {
+	 Write-Warning "$file Unable to locate file"
+	 return;
+}
+
+if($tokenList.Count -eq 0)
+ {
+	 Write-Warning 'No xpath token defined'
+	 return;
+ }
+
+	try{
+       $xml = [xml] [System.IO.File]::ReadAllText($file) 
+		}
+	catch 
+	{
+	    ### IF not well formed XML then just ignore	
+		Write-Verbose -Message $_.Exception.Message
+		Write-Warning "Invalid XML file $($file) - file skipped"
+		return;
+	}
 	foreach ($h in $tokenList) {
 		Edit-XmlNodes $xml -xpath $h.TypeProperty -value $h.Value
 }
 
-$xml.save($file)
+    $xml.save($file)
 	}
+
+
+
 
 function Edit-XmlNodes {
 param (
 	 [Parameter(Mandatory=$true)] 
-    [xml] $doc ,
+     [xml] $doc ,
 	 [Parameter(Mandatory=$true)] 
-    [string] $xpath ,
+     [string] $xpath ,
 	 [Parameter(Mandatory=$true)] 
-    [string] $value ,
-    [bool] $condition = $true
+     [string] $value ,
+     [bool] $condition = $true
 )    
     if ($condition -eq $true) {
         $nodes = $doc.SelectNodes($xpath)
@@ -136,4 +158,10 @@ param (
             }
         }
     }
+}
+
+
+function Get-RelativePath($filePath)
+{
+	return Join-Path $relativePath $filePath
 }

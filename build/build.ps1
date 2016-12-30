@@ -1,5 +1,6 @@
-
-$parent = '..\'
+$parentScript=  Split-Path -Parent $MyInvocation.MyCommand.Path
+$parent = Split-Path -Parent $parentScript
+#$parent = '..\'
 $binDir = "$parent\bin"
 $jingaDirectory = "$parent\jinga\"
 $jingaBinDirectory = "$binDir\jinga\"
@@ -7,7 +8,18 @@ $jingaBinFunctionDirectory = "$binDir\jinga\Functions\"
 
 # Run tests
 
-# Create Package 
+#Get Nuget Package 
+$binDir = "$parent\bin"
+if (Test-Path $binDir -PathType container) {
+    Remove-Item -Recurse -Force $binDir
+
+}
+
+& .\loadnugetreference.ps1
+#Create package 
+& .\nugetBuild.ps1
+
+# Add jinga Package 
 
 
   if (Test-Path $jingaBinDirectory ) {Remove-Item $jingaBinDirectory -Recurse} 

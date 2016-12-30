@@ -29,7 +29,7 @@ function Run-JingaOperation
 		}
 		$JingaModelCollection+=$jingaModel;
 		}
-	
+	Write-Host $JingaModelCollection |Format-Table
 		return $JingaModelCollection;
 }
 

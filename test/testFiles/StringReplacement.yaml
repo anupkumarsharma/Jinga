@@ -1,0 +1,28 @@
+﻿Configuration:
+ - Define:
+    TypeXpath: 
+    TypeRegEx:
+ - RuleSet:
+    File: 'workingDir\stringR_File1.config'
+    Substitute:
+     development:
+      database: myapp_development
+      adapter:  postgres
+      host:     AnupHost
+      regexpression: 10
+     test:
+      database: myapp_test
+      adapter:  postgres
+      host:     localhost
+ - RuleSet:
+    File: 'workingDir\stringR_File2.txt'
+    Substitute:
+     development:
+      database: myapp_development
+      adapter:  postgres
+      host:     localhost
+      regexpression: 1010
+     test:
+      database: myapp_test
+      adapter:  postgres
+      host:     localhost
