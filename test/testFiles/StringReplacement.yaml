@@ -3,7 +3,7 @@
     TypeXpath: 
     TypeRegEx:
  - RuleSet:
-    File: 'workingDir\stringR_File1.config'
+    File: '\test\workingDir\stringR_File1.config'
     Substitute:
      development:
       database: myapp_development
@@ -15,7 +15,7 @@
       adapter:  postgres
       host:     localhost
  - RuleSet:
-    File: 'workingDir\stringR_File2.txt'
+    File: '\test\workingDir\stringR_File2.txt'
     Substitute:
      development:
       database: myapp_development

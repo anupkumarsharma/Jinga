@@ -5,15 +5,15 @@
 
 function Get-RelativePath([string] $filePath)
 {
-	#return $(Get-Location)
-	return Join-Path $(Get-Location) $filePath
+	$root =  Join-Path $(Get-Location) "test\" 
+	return Join-Path $root  $filePath
 }
 
 [string] $backupfilePath = @(Get-RelativePath 'workingDir\Backup')
 
 ### Import Module 
-Remove-Module jinga
-Import-Module "C:\Workspace_Anup-SeedProject\Jinga_Git\Jinga\bin\jinga\Jinga.psm1"
+Remove-Module jinga -ErrorAction Ignore 
+Import-Module @(Join-Path $(Get-Location) "\bin\jinga\Jinga.psm1")
 $global:resultSet =  @()
 
 

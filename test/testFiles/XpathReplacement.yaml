@@ -6,7 +6,7 @@
       title: //actor[@id='2']/text()
     TypeRegEx: 
  - RuleSet:
-    File: 'workingDir\xpathR_File1.config'
+    File: '\test\workingDir\xpathR_File1.config'
     Substitute:
      development:
       title: Fire And Ice
@@ -18,7 +18,7 @@
       adapter:  GamesofThrones
       host:     RRMartin
  - RuleSet:
-    File: 'workingDir\xpathR_File2.txt'
+    File: '\test\workingDir\xpathR_File2.txt'
     Substitute:
      development:
       title: Fire And Ice
