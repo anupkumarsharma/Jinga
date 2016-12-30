@@ -1,7 +1,7 @@
 #region Third Party Modules - Todo - Replace with better mechanism
 $relativePath = Split-Path -Parent $script:MyInvocation.MyCommand.Path
 $relativePath=[string]::Join('\', $relativePath.Split('\')[0..$($relativePath.Split('\').Length-2)])
-Import-Module @(Join-Path $relativePath "\vendors\PowerYaml.1.0.2\tools\PowerYaml.psm1")
+Import-Module @(Join-Path $relativePath "\vendors\PowerYaml.1.0.1\tools\PowerYaml.psm1")
 #region  Functions
 . $PSScriptRoot\Functions\fileoperations.ps1
 . $PSScriptRoot\Functions\jingaoperations.ps1
