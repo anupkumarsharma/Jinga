@@ -7,6 +7,7 @@ Import-Module @(Join-Path $relativePath "\vendors\PowerYaml.1.0.1\tools\PowerYam
 . $PSScriptRoot\Functions\jingaoperations.ps1
 . $PSScriptRoot\Functions\yamloperations.ps1
 . $PSScriptRoot\Functions\model.ps1
+. $PSScriptRoot\Functions\logger.ps1
 
 
 <#
@@ -23,18 +24,13 @@ function Invoke-Jinga {
 		   )
 		  
 	 if (-not $nologo) {
-            "jinga"
+           Write-Host "Jinga- author anup sharma" -ForegroundColor White
         }
-	  try {
 		  
 			[YamlModel] $yamlModel = Run-YamlOperations -YamlFilePath $file -EnvironmentType $environmentType
-			[JingaModel[]] $JingaModel  =  Run-JingaOperation -YamlModel $yamlModel
-			Run-FileOperations -JingaModel $JingaModel  -backupPath $backup 
-		  }
-	   catch {
-          Write-Host -Message $_.Exception.Message
-		     }
-	
+	        if($yamlModel -ne $null) {[JingaModel[]] $JingaModel  =  Run-JingaOperation -YamlModel $yamlModel}
+			if($JingaModel -ne $null) {Run-FileOperations -JingaModel $JingaModel  -backupPath $backup }
+		
 }
 
 export-modulemember -function Invoke-Jinga

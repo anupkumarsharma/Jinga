@@ -2,6 +2,7 @@
 # FileOperations.ps1
 #
 . $PSScriptRoot\model.ps1
+. $PSScriptRoot\logger.ps1
 #$parentScript=  Split-Path -Parent $MyInvocation.MyCommand.Path
 $relativePath = $(Get-Location)
 function Run-FileOperations
@@ -11,7 +12,8 @@ function Run-FileOperations
          [JingaModel[]]  $JingaModel ,
 		 [Parameter(Mandatory=$true)] 
 		 [string] $backupPath)
-	Write-Host "Running File Operations For $file - Start"
+	Log-Console -message "Running File Operations For $file - Start" -level 'Info'
+	#Write-Host "Running File Operations For $file - Start"
 	Write-Host "Backup Folder Configured - $backupPath"
 	Process-VairableSubstitutions -JingaModel $JingaModel  -backupPath $backupPath
 	Write-Host "Running File Operations - Done"

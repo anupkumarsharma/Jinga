@@ -10,10 +10,17 @@ function Run-YamlOperations
 		 [Parameter(Mandatory=$true)]
 		 [string]$EnvironmentType)
 	 Write-Host "Running YAML Operations - Start"
+	 #validate file path
+	if ($YamlFilePath -eq $null) {
+	Write-Warning "$file File have no content or bad format"
+	return;
+	}
+    if (-not (Test-Path $YamlFilePath ) ) {
+	 Write-Error " Unable to locate yaml file - $YamlFilePath"
+	  Break;
+	}
 	 #Get YAML From File
 	 $yamlContent = Read-Yaml $YamlFilePath;
-	 #Validate YAML 
-	 Validate-YamlStructure $yamlContent
 	 #Get YAML Model
 	 $model = New-Object YamlModel
 	 $model.SubstitutionModel = Parse-Yaml $yamlContent $EnvironmentType
@@ -25,8 +32,10 @@ function Run-YamlOperations
 
 
 function Read-Yaml ([string] $YamlFilePath) {
-	Write-Host $YamlFilePath
-$yaml = Get-Yaml -FromFile (Resolve-Path $YamlFilePath)
+Write-Host "Yaml file path configured:$($YamlFilePath)"
+$yaml = Get-Yaml -FromFile (Resolve-Path $YamlFilePath) 
+#Validate YAML 
+Validate-YamlStructure $yaml
 return  $yaml
 }
 
@@ -72,6 +81,7 @@ function Parse-Defination($yaml)
 	}
 	return $typeModel;
 }
+
 function Validate-YamlStructure ($yamlContent){
 
 }
