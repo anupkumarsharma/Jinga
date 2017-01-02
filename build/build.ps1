@@ -13,7 +13,6 @@ $jingaBuildDirectory = "$parent\build\"
 $binDir = "$parent\bin"
 if (Test-Path $binDir -PathType container) {
     Remove-Item -Recurse -Force $binDir
-
 }
 
 & $jingaBuildDirectory\loadnugetreference.ps1

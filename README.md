@@ -23,7 +23,7 @@ A Jinga Invocation
 ```powershell
 
 Invoke-Jinga  $yamlFilepath $backupfilePath 'development' 
-
+```
 YAML Configuration
 -------------
 ```YAML
@@ -57,6 +57,6 @@ Configuration:
       database: myapp_test
       adapter:  postgres
       host:     localhost
-
+```
 This is still in active development and stable release will be out by Jan 2017
 

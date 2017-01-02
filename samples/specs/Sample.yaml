@@ -5,7 +5,7 @@
     TypeRegEx: 
       regexpression:  '\.\d{2}\.'
  - RuleSet:
-    File: 'C:\Workspace_Anup-SeedProject\Jinga\web.config'
+    File: 'web.config'
     Substitute:
      development:
       database: myapp_development
@@ -17,7 +17,7 @@
       adapter:  postgres
       host:     localhost
  - RuleSet:
-    File: 'C:\Workspace_Anup-SeedProject\Jinga\app.config'
+    File: 'app.txt'
     Substitute:
      development:
       database: myapp_development

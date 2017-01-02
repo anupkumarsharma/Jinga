@@ -1,3 +1,4 @@
+## This nuget script is invoked by build.ps, to get nuget\packages
 $parentScript=  Split-Path -Parent $MyInvocation.MyCommand.Path
 $parent = Split-Path -Parent $parentScript
 write-host $parent
