@@ -42,7 +42,8 @@ Invoke-Jinga  $yamlFilepath $backupfilePath 'development' $True
 $r = validate-backupfiles 2
 publish-result $r
 $r = validate-xpathReplacedFiles
-publish-result $r 
+$returnValue =  publish-result $r 
+write-host $returnValue
 ############
 ############
 
@@ -57,8 +58,7 @@ function publish-result($result,$final= 0)
    $failureExists = $false
    $resultSet| ForEach-Object { if( $_ -like "*Success*" ) { Write-Host $_ -ForegroundColor Green} else {Write-Host $_ -ForegroundColor Red}}
    $resultSet| ForEach-Object {  if( $_ -like "*Success*" ) { $failureExists = $true;}}
-   $failureExists
-  return $failureExists
+ # return $failureExists
  }
 
  $global:resultSet+= $result
