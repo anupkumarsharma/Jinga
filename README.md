@@ -5,9 +5,9 @@ Jinga
 Jinga pronounced as Zynga provides a solution to handle the **file transformations using simple YAML file as input**. 
 YAML provides the best way to maintain different variables and maintain values of those, for a different type of environment or setting.
 Variables can be defined to be substituted by any of the following mechanism.
-*String Replacement
-*XPath Replacement
-*Regex Replacement 
+- String Replacement
+- XPath Replacement
+- Regex Replacement 
 
  
 
@@ -21,8 +21,17 @@ A Jinga Invocation
 -------------
 ```powershell
 
-Invoke-Jinga  $yamlFilepath $backupfilePath 'development' 
+Invoke-Jinga  -yamlFile$yamlFilepath -backup $backupfilePath -environmentType 'development' -scriptPath $relativePathOfYaml
 ```
+
+Example
+-------------
+```powershell
+..\packages\jinga.0.0.4-beta\Jinga.ps1 -yamlFile 'jinga.yaml'  -backup '.\backup\' -environmentType 'development' -scriptPath .
+..\packages\jinga.0.0.4-beta\Jinga.ps1 -yamlFile 'jinga.yaml'  -backup '.\backup\' -environmentType 'development' -scriptPath 'c:\MySolution'
+
+```
+
 YAML Configuration
 -------------
 ```YAML
@@ -57,5 +66,11 @@ Configuration:
       adapter:  postgres
       host:     localhost
 ```
+
+Known Scenarios
+-------------
+- When invoking the script invocation path should be location of jinga.ps1, while scriptPath should be path where yaml file is located. Any target files
+ that needs to be transformed should be relative to scriptPath.
+
 This is still in active development and stable release will be out by Jan 2017
 
