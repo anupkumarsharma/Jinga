@@ -2,15 +2,15 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>jinga</id>
-    <version>0.0.0</version>
+    <version>0.0.3-beta</version>
     <authors>Anup Sharma</authors>
     <owners>Anup Sharma</owners>
     <projectUrl>https://github.com/anupkumarsharma/Jinga</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <summary>inga pronounced as Zynga provides a solution to handle the file transformations using simple YAML file as input.</summary>
+    <summary>Jinga pronounced as Zynga provides a solution to handle the file transformations using simple YAML file as input.</summary>
     <description>Developers often work with configuration files locally like web.config, app.config and during build/release process, these files need to be transformed as per the environment values. This becomes a tedious process for continuous integration. Idea is to replace this step with a simple script, which can handle the substitutions of the variable at any point in time and can transform the file with correct values. </description>
     <language>en-US</language>
-    <tags>build powershell</tags>
+    <tags>build, powershell, localize , transformation</tags>
   </metadata>
    <files>
     <file src="tools\**\*" target="tools" />

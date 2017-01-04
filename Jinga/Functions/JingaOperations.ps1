@@ -8,7 +8,8 @@ function Run-JingaOperation
 {
 	Param (
 		 [Parameter(Mandatory=$true)] 
-         [YamlModel]  $YamlModel )
+         [YamlModel]  $YamlModel 
+)
 	     [JingaModel[]] $JingaModelCollection = @()
 
 	foreach ($model in $YamlModel.SubstitutionModel) {

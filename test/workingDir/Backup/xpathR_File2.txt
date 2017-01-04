@@ -1,9 +1,0 @@
-Test File 1 - This tests the string type replacement capability of Jinga
-Header
-%ModuleName%
-%Author%
-%host%
-%adapter%
-%database%
-
-Footer

@@ -3,6 +3,8 @@
 #
 
 
+
+
 function Get-RelativePath([string] $filePath)
 {
 	$root =  Join-Path $(Get-Location) "test\" 
@@ -50,15 +52,34 @@ write-host $returnValue
 }
 
 
+function JingaShouldReplaceallTheRegexTokenDefinedInYaml_Fact(){
+#### Prepare
+Clean-WorkingDirectory
+copy-regexgtypestubfiles
+[string]$yamlFilepath =  @(Get-RelativePath 'testFiles\RegexReplacement.yaml')
+Invoke-Jinga  $yamlFilepath $backupfilePath 'development' 
+##Validate 
+$r = validate-backupfiles 2
+publish-result $r
+$r = validate-regexReplacedFiles
+$returnValue =  publish-result $r 
+write-host $returnValue
+############
+############
+
+}
+
+
+
 function publish-result($result,$final= 0)
 {
 
  if($final -eq 1)
  {
-   $failureExists = $false
+   $isSuccess = $true
    $resultSet| ForEach-Object { if( $_ -like "*Success*" ) { Write-Host $_ -ForegroundColor Green} else {Write-Host $_ -ForegroundColor Red}}
-   $resultSet| ForEach-Object {  if( $_ -like "*Success*" ) { $failureExists = $true;}}
- # return $failureExists
+   $resultSet| ForEach-Object {  if( $_ -like "*Failed*" -or $_ -like "*Failure*" ) { $isSuccess = $false;}}
+ return $isSuccess
  }
 
  $global:resultSet+= $result
@@ -76,7 +97,6 @@ $totalCount = (Get-ChildItem  $backupfilePath | Measure-Object ).Count
 if($totalCount -ne $fileCount)
 {
   return "Assert - Backup count - Failed"
-  
 }
 else
 {
@@ -113,20 +133,36 @@ function validate-xpathReplacedFiles(){
 # Read content of the string replaced file and validate the preset words
 	$content = [System.IO.File]::ReadAllText( @(Get-RelativePath 'workingDir\xpathR_File1.config'))
      $expectedTokens = 'GamesofThrones','Fire And Ice','RRMartin'
-     $expectedTokens| ForEach-Object { if($content -like '*'+$_+'*'){ $testResult+= "Assert - string replacement $($_) - Success" } else {$testResult+= "Assert - xp replacement $($_) - Failure"} }
-      
-    return $testResult
+     $expectedTokens| ForEach-Object { if($content -like '*'+$_+'*'){ $testResult+= "Assert - Xpath replacement $($_) - Success" } else {$testResult+= "Assert - xp replacement $($_) - Failure"} }
+      return $testResult
 
 }
 
 function copy-regexgtypestubfiles(){
+xcopy @(Get-RelativePath 'specFiles\regExpathR_File1.config') @(Get-RelativePath 'workingDir\')
+xcopy @(Get-RelativePath 'specFiles\regExR_File2.txt') @(Get-RelativePath 'workingDir\')
 }
 function validate-regexReplacedFiles(){
+ $testResult = @();
+# Read content of the string replaced file and validate the preset words
+	$content = [System.IO.File]::ReadAllText( @(Get-RelativePath 'workingDir\regExpathR_File1.config'))
+     $expectedTokens = 'triplea'
+     $expectedTokens| ForEach-Object { if($content -like '*'+$_+'*'){ $testResult+= "Assert - RegEX replacement $($_) - Success" } else {$testResult+= "Assert - xp replacement $($_) - Failure"} }
+	  
+	  # Read content of the string replaced file and validate the preset words
+	$content = [System.IO.File]::ReadAllText( @(Get-RelativePath 'workingDir\regExR_File2.txt'))
+     $expectedTokens = 'IPREPLACED','DATEREPLACED'
+     $expectedTokens| ForEach-Object { if($content -like '*'+$_+'*'){ $testResult+= "Assert - RegEX replacement $($_) - Success" } else {$testResult+= "Assert - xp replacement $($_) - Failure"} }
+      return $testResult
 }
 
 
+
+######### FACTS ##############################
 JingaShouldReplaceallTheStringTokenDefinedInYaml_Fact
 JingaShouldReplaceallTheXpathTokenDefinedInYaml_Fact
+JingaShouldReplaceallTheRegexTokenDefinedInYaml_Fact
+##############################################
 
 $code = publish-result $r 1
 return $code 

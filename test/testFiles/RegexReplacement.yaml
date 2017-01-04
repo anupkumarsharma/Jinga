@@ -1,28 +1,35 @@
 ﻿Configuration:
  - Define:
     TypeXpath: 
-      host:  /file/foo[@attribute='bar']/@attribute
     TypeRegEx: 
       regexpression:  '\.\d{2}\.'
+      ipAdress:  '\b(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b'
+      date: '(19|20)\d\d([- /.])(0[1-9]|1[012])\2(0[1-9]|[12][0-9]|3[01])'
+      triplea: 'a{3}' 
  - RuleSet:
-    File: 'C:\Workspace_Anup-SeedProject\Jinga\web.config'
+    File: '\test\workingDir\regExpathR_File1.config'
     Substitute:
      development:
       database: myapp_development
       adapter:  postgres
       host:     AnupHost
-      regexpression: 10
+      ipAdress: IPREPLACED
+      date: DATEREPLACED
+      triplea: triplea
      test:
       database: myapp_test
       adapter:  postgres
       host:     localhost
  - RuleSet:
-    File: 'C:\Workspace_Anup-SeedProject\Jinga\app.config'
+    File: '\test\workingDir\regExR_File2.txt'
     Substitute:
      development:
       database: myapp_development
       adapter:  postgres
-      host:     localhost
+      host:     AnupHost
+      ipAdress: IPREPLACED
+      date: DATEREPLACED
+      triplea: triplea
       regexpression: 1010
      test:
       database: myapp_test

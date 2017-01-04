@@ -5,22 +5,27 @@
 function Log-Console{
 	param(
 	[Parameter(Mandatory=$false)] 
-        [ValidateSet("Error","Warn","Info")] 
+        [ValidateSet("Error","Warn","Info","Verbose")] 
         [string]$Level="Info", 
-		 [ValidateNotNullOrEmpty()] 
+		[ValidateNotNullOrEmpty()] 
         [Alias("LogContent")] 
 		[string]$Message 
          )
     # Write message to error, warning, or verbose pipeline and specify $LevelText 
         switch ($Level) { 
             'Error' { 
-                Write-Error $Message 
+                Write-Error $Message -ForegroundColor Red
                 } 
             'Warn' { 
-                Write-Warning $Message 
+                Write-host $Message  -ForegroundColor Yellow
                 } 
             'Info' { 
                 Write-host $Message -ForegroundColor Green
                 } 
+
+			 'Verbose' { 
+                Write-Verbose $Message 
+                } 
+
             } 
          }
