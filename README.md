@@ -1,5 +1,5 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/si40sx6k2lkfc7w0?svg=true)](https://ci.appveyor.com/project/anupkumarsharma/jinga)
-[![Latest version](https://img.shields.io/nuget/v/Hangfire.svg)](https://www.nuget.org/packages?q=hangfire)
+[![Latest version](https://img.shields.io/nuget/v/jinga.svg)](https://www.nuget.org/packages?q=jinga)
 Jinga
 =======
 Jinga pronounced as Zynga provides a solution to handle the **file transformations using simple YAML file as input**. 
