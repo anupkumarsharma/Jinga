@@ -11,12 +11,17 @@ function Run-FileOperations
 		 [Parameter(Mandatory=$true)] 
          [JingaModel[]]  $JingaModel ,
 		 [Parameter(Mandatory=$true)] 
-		 [string] $backupPath)
-	Log-Console -message "Running File Operations For $file - Start" -level 'Info'
-	#Write-Host "Running File Operations For $file - Start"
-	Write-Host "Backup Folder Configured - $backupPath"
+		 [string] $backupPath,
+		 [Parameter(Mandatory=$false)]
+		 [string]$scriptPath 
+)
+	if ($scriptPath) {
+		$relativePath = $scriptPath
+		}
+
+	Log-Console -message "Backup Folder Configured - $backupPath" -level 'Info'
 	Process-VairableSubstitutions -JingaModel $JingaModel  -backupPath $backupPath
-	Write-Host "Running File Operations - Done"
+	Log-Console -message "Running File Operations" -level 'Info'
 }
 
 
@@ -32,12 +37,18 @@ function Process-VairableSubstitutions
 	{
 		[JingaModel]$jingaModel = $model;
 		$relativeFile =  Get-RelativePath $jingaModel.FileName
-		Write-Host 'Processing file -'$relativeFile
+		Log-Console -message "Initiating Process For File- $($relativeFile)" -level 'Info'
+		 if (-not (Test-Path $relativeFile ) ) {
+		 Log-Console -message "Skipped.Unable to locate file." -level 'Warn'
+		 }else
+		{
 		Backup-Copy -file $relativeFile -backupPath $backupPath;
 	    #Process String and Regex
 		Replace-FileStringTokens -file $relativeFile -stringTokenList  $jingaModel.StringTypeCollection -regexTokenList $jingaModel.RegexCollection
 		#Process Xpath 
 		Replace-FileXpathTokens -file $relativeFile  -tokenlist $jingaModel.XpathTypeCollection
+		Log-Console -message "Successfully Processed" -level 'Info'
+		}
 	}
 }
 
@@ -67,16 +78,13 @@ function Replace-FileStringTokens{
 ) 
 	  if ($file -eq $null) 
 {
-	Write-Warning "$file File have no content or bad format"
+		Log-Console -message "File have no content or bad format" -level 'Warn'
 	return;
 }
- if (-not (Test-Path $file ) ) {
-	 Write-Warning "$file Unable to locate file"
-	 return;
-}
+
 	if($stringTokenList.Count -eq 0 -and $regexTokenList.Count -eq 0)
 	{
-		Write-Warning 'No string/regex token defined'
+		Log-Console -message "No string/regex token defined" -level 'Warn'
 		return;
 	}
 
@@ -102,17 +110,13 @@ function  Replace-FileXpathTokens{
 ) 
 if ($file -eq $null) 
 {
-	Write-Warning "$file File have no content or bad format"
+		Log-Console -message "File have no content or bad format" -level 'Warn'
 	return;
-}
- if (-not (Test-Path $file ) ) {
-	 Write-Warning "$file Unable to locate file"
-	 return;
 }
 
 if($tokenList.Count -eq 0)
  {
-	 Write-Warning 'No xpath token defined'
+	 Log-Console -message "No xpath token defined" -level 'Warn'
 	 return;
  }
 
@@ -122,8 +126,8 @@ if($tokenList.Count -eq 0)
 	catch 
 	{
 	    ### IF not well formed XML then just ignore	
-		Write-Verbose -Message $_.Exception.Message
-		Write-Warning "Invalid XML file $($file) - file skipped"
+		Log-Console -message  $_.Exception.Message -level 'Verbose'
+		Log-Console -message "Invalid XML file" -level 'Warn'
 		return;
 	}
 	foreach ($h in $tokenList) {

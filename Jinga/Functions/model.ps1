@@ -11,9 +11,9 @@ Class VariableModel{
 Class JingaModel {
 	[String] $FileName;
     [String] $EnvironmentName;
-	   [VariableModel[]]  $StringTypeCollection; 
-	  [VariableModel[]]	$XpathTypeCollection; 
-	   [VariableModel[]]	 $RegexCollection; 
+	[VariableModel[]] $StringTypeCollection; 
+	[VariableModel[]] $XpathTypeCollection; 
+	[VariableModel[]] $RegexCollection; 
   
 }
 

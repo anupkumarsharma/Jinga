@@ -17,7 +17,7 @@ if (Test-Path $binDir -PathType container) {
 
 & $jingaBuildDirectory\loadnugetreference.ps1
 #Create package 
-& $jingaBuildDirectory\nugetBuild.ps1
+& $jingaBuildDirectory\package.ps1
 
 # Add jinga Package 
 
@@ -26,7 +26,7 @@ if (Test-Path $binDir -PathType container) {
   if (Test-Path $jingaBinFunctionDirectory ) {Remove-Item $jingaBinFunctionDirectory -Recurse}
  New-Item $jingaBinDirectory -ItemType directory | Out-Null
  New-Item $jingaBinFunctionDirectory -ItemType directory | Out-Null
-@( "jinga.psm1","jinga.psd1" ) |% { Copy-Item $jingaDirectory$_ $jingaBinDirectory }
+@( "jinga.psm1","jinga.psd1","Jinga.ps1" ) |% { Copy-Item $jingaDirectory$_ $jingaBinDirectory }
 @( "Functions\*" ) |% { Copy-Item $jingaDirectory$_ $jingaBinFunctionDirectory }
 	
 # Run Nuget
