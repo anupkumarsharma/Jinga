@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>jinga</id>
-    <version>0.0.3-beta</version>
+    <version>0.0.4-beta</version>
     <authors>Anup Sharma</authors>
     <owners>Anup Sharma</owners>
     <projectUrl>https://github.com/anupkumarsharma/Jinga</projectUrl>
